@@ -6,6 +6,7 @@ services:
         ports:
             - 8080:8080
         restart: always
+        command: /bin/bash -c "wget -O /etc/nginx/nginx.conf -- https://raw.githubusercontent.com/bingosummer/broker-proxy/master/nginx.conf && nginx -g 'daemon off;'"
 
     nginx:
         depends_on:

@@ -5,7 +5,3 @@ RUN apt-get update \
     ca-certificates \
     wget \
  && apt-get clean
-
-RUN wget -O /etc/nginx/nginx.conf -- https://binxidevstorageaccount.blob.core.windows.net/tmp/nginx.conf
-
-CMD service nginx restart
