@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+    reverseproxy:
+        image: bingosummer/broker-proxy
+        ports:
+            - 8080:8080
+        restart: always
+
+    nginx:
+        depends_on:
+            - reverseproxy
+        image: nginx:alpine
+        restart: always
+
+    apache:
+        depends_on:
+            - reverseproxy
+        image: httpd:alpine
+        restart: always
+
+    cron-container-starter:
+        container_name: cron-container-starter
+        image: jordancrawford/cron-container-starter
+        restart: always
+        # Don't take a large portion of memory or CPU shares.
+        cpu_shares: 128
+        mem_limit: 64m
+        # Setup container start rules.
+        environment:
+            CONTAINER_reverseproxy: '* * * * *'
+        # Setup the Docker socket as a volume so the container can control Docker.
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
